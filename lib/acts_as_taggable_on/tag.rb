@@ -13,10 +13,10 @@ class Tag < ActiveRecord::Base
   
   ### NAMED SCOPES:
   
-  named_scope :named, lambda { |name| { :conditions => ["name LIKE ?", name] } }
-  named_scope :named_any, lambda { |list| { :conditions => list.map { |tag| sanitize_sql(["name LIKE ?", tag.to_s]) }.join(" OR ") } }
-  named_scope :named_like, lambda { |name| { :conditions => ["name LIKE ?", "%#{name}%"] } }
-  named_scope :named_like_any, lambda { |list| { :conditions => list.map { |tag| sanitize_sql(["name LIKE ?", "%#{tag.to_s}%"]) }.join(" OR ") } }
+  named_scope :named, lambda { |name| { :conditions => ["name LIKE ? COLLATE utf8_bin", name] } }
+  named_scope :named_any, lambda { |list| { :conditions => list.map { |tag| sanitize_sql(["name LIKE ?", tag.to_s]) }.join(" OR ") + " COLLATE utf8_bin" } }
+  named_scope :named_like, lambda { |name| { :conditions => ["name LIKE ? COLLATE utf8_bin", "%#{name}%"] } }
+  named_scope :named_like_any, lambda { |list| { :conditions => list.map { |tag| sanitize_sql(["name LIKE ?", "%#{tag.to_s}%"]) }.join(" OR ") + " COLLATE utf8_bin" } }
   
   ### CLASS METHODS:
   
